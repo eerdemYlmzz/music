@@ -53,75 +53,64 @@ duygular = [
     "mutlu", "mutlu", "mutlu", "mutlu", "üzgün", "mutlu", "mutlu","üzgün","üzgün","stresli"
 ]
 
-# Modeli oluştur
 vectorizer = CountVectorizer(lowercase=True)
 X = vectorizer.fit_transform(egitim_cumleleri)
 model = MultinomialNB()
 model.fit(X, duygular)
 
-# GUI fonksiyonunu oluştur
 def tahmin_et():
-    hikaye = entry.get()  # Kullanıcının yazdığı metni al
-    hikaye_vec = vectorizer.transform([hikaye])  # Metni sayısal formata çevir
-    tahmin = model.predict(hikaye_vec)  # Duygu tahminini yap
+    hikaye = entry.get()  
+    hikaye_vec = vectorizer.transform([hikaye]) 
+    tahmin = model.predict(hikaye_vec) 
     
-    # Şarkı önerilerini belirle
     sarki_onerileri = {
         "mutlu": ["Dua Lipa - Levitating", "Micheal Jackson - Smooth Criminal"],
         "üzgün": ["Dua Lipa - French Exit", "Billie Eilish - Wildflower"],
         "heyecanlı": ["Sean Paul, Dua Lipa - No Lie", "Queen - Don't Stop Me Now"],
         "stresli": ["Billie Eilish - Blue", "Dua Lipa - Maria"],
         "şaşkın": ["Lana Del Rey - West Coast", "Elton John - Where is the Shoorah?..."],
-        "yorgun": ["Gotye - Somebody That I Used To Know", "ABBA - Dancing Queen"]
+        "yorgun": ["Gotye - Somebody That I Used To Know", "ABBA - Dancing Queen","Dua Lipa - Love Again"]
     }
 
-    # Tahmin edilen duyguyu ve şarkıları göster
     öneri = sarki_onerileri.get(tahmin[0], ["Ruh haline uygun şarkı bulamadım."])
     sonuc_label.config(text=f"Senin ruh halin: {tahmin[0]}\nÖnerilen şarkılar: {', '.join(öneri)}", fg="blue")
 
-# Çıkış yapma fonksiyonu
 def exit_program():
-    root.quit()  # Pencereyi kapatır
+    root.quit()  
 
-# Pencereyi oluştur
+# Pencereyi oluşturu
 root = tk.Tk()
 root.title("Duygu Durumu ve Şarkı Önerisi")
-root.config(bg="lightblue")  # Arka plan rengini mavi yap
+root.config(bg="lightblue")  
 
 # Küçültme fonksiyonu
 def kucult():
-    root.attributes("-fullscreen", False)  # Tam ekranı kapat
-    root.geometry("400x300")  # Pencere boyutunu ayarla
+    root.attributes("-fullscreen", False)  
+    root.geometry("400x300") 
 
 # Büyütme fonksiyonu
 def buyut():
-    root.attributes("-fullscreen", True)  # Tam ekranı aç
+    root.attributes("-fullscreen", True)  
 
-# Kullanıcıdan metin almak için etiket ve giriş kutusu
 label = tk.Label(root, text="Bugün nasılsın? Biraz anlat ", bg="lightblue", font=("Helvetica", 12))
 label.grid(row=0, column=0, padx=10, pady=10)
 
 entry = tk.Entry(root, width=50)
 entry.grid(row=1, column=0, padx=10, pady=10)
 
-# Tahmin et butonu
 tahmin_button = tk.Button(root, text="Ruh Halini Tahmin Et ve Şarkı Öner", command=tahmin_et, bg= "cyan")
 tahmin_button.grid(row=2, column=0, padx=10, pady=10)
 
-# Sonuçları göstermek için etiket
 sonuc_label = tk.Label(root, text="", width=50, height=6, bg="lightblue", font=("Helvetica", 10))
 sonuc_label.grid(row=3, column=0, padx=10, pady=10)
 
-# Çıkış butonu
 exit_button = tk.Button(root, text="Çıkış Yap", command=exit_program, bg="red")
 exit_button.grid(row=5, column=0, padx=40, pady=20)
 
-# Küçültme ve büyütme butonları
 kucult_button = tk.Button(root, text="Küçült", bg="salmon", command=kucult)
 kucult_button.grid(row=6, column=0, padx=10, pady=10)
 
 buyut_button = tk.Button(root, text="Büyüt", bg="salmon", command=buyut)
 buyut_button.grid(row=7, column=0, padx=10, pady=10)
 
-# Uygulamayı çalıştır
 root.mainloop()
